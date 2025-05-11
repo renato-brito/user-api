@@ -88,7 +88,7 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public List<UserDTO> queryByName(@RequestParam(required = true) String nome) {
+    public List<UserDTO> queryByName(@RequestParam String nome) {
         return userService.queryByName(nome);
     }
 
