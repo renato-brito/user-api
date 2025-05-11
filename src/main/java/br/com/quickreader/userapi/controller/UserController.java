@@ -1,11 +1,15 @@
 package br.com.quickreader.userapi.controller;
 
+import br.com.quickreader.userapi.dto.PageResponse;
 import br.com.quickreader.userapi.dto.UserDTO;
 import br.com.quickreader.userapi.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -94,7 +98,23 @@ public class UserController {
     }
 
     @GetMapping("/pageable")
-    public Page<UserDTO> getUsersPage(Pageable pageable) {
-        return userService.getAllPage(pageable);
+    public PagedModel<EntityModel<UserDTO>> getUsersPage(Pageable pageable, PagedResourcesAssembler<UserDTO> assembler) {
+        return userService.getAllPage(pageable, assembler);
+    }
+
+    // Modelo simples
+    @GetMapping("/page")
+    public PageResponse<UserDTO> getUsersPage(Pageable pageable) {
+        Page<UserDTO> page = userService.getAllPage(pageable);
+
+        return new PageResponse<>(
+                page.getContent(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages(),
+                page.isLast(),
+                page.isFirst()
+        );
     }
 }

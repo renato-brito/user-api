@@ -6,6 +6,10 @@ import br.com.quickreader.userapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -69,6 +73,12 @@ public class UserService {
         user.setEmail(userDTO.getEmail());
         user.setTelefone(userDTO.getTelefone());
         return UserDTO.convert(userRepository.save(user));
+    }
+
+    public PagedModel<EntityModel<UserDTO>> getAllPage(Pageable pageable, PagedResourcesAssembler<UserDTO> assembler) {
+        Page<UserDTO> page = userRepository.findAll(pageable)
+                .map(UserDTO::convert);
+        return assembler.toModel(page, WebMvcLinkBuilder.linkTo(UserService.class).slash("users").withSelfRel());
     }
 
     public Page<UserDTO> getAllPage(Pageable pageable) {
