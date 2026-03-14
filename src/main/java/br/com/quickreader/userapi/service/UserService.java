@@ -45,6 +45,7 @@ public class UserService {
         userDTO.setDataCadastro(LocalDateTime.now());
         User user = userRepository.save(User.convertToUser(userDTO));
         return UserDTO.convert(user);
+        
     }
 
     public UserDTO delete(long id) {
