@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "tb_user", schema = "users")
 public class User {
 
     @Id
@@ -25,6 +25,8 @@ public class User {
     private String endereco;
     private String email;
     private String telefone;
+
+    @Column(name = "data_cadastro")
     private LocalDateTime dataCadastro;
 
     public static User convertToUser(UserDTO userDTO) {

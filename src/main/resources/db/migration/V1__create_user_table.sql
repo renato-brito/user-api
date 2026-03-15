@@ -1,6 +1,6 @@
 create schema if not exists users;
 
-create table users.user (
+create table users.tb_user (
     id bigserial primary key,
     nome varchar(100) not null,
     cpf varchar(100) not null,
